@@ -50,6 +50,7 @@ export default () => {
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const navigate = useNavigate();
+  const [isEmailValid, setIsEmailValid] = useState(false);
 
   const onFinish = async (values) => {
     console.log("Received values of form: ", values);
@@ -136,7 +137,8 @@ export default () => {
 
   const handleEmailChange = (e) => {
     const email = e.target.value;
-    if (email.endsWith("@sst.scaler.com")) {
+    if (email.endsWith("@sst.scaler.com") || email.endsWith("@scaler.com")) {
+      setIsEmailValid(true);
       setIsStudent(true);
     } else {
       setIsStudent(false);
@@ -192,7 +194,10 @@ export default () => {
 
       {!otpVerified && (
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" onClick={handleGetOtpClick}>
+          <Button type="primary" 
+          onClick={handleGetOtpClick}
+          disabled ={!isEmailValid}
+          >
             {otpSent ? "Resend OTP" : "Send OTP"}
           </Button>
         </Form.Item>
